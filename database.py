@@ -20,8 +20,8 @@ class Database:
         """
         query = """
         CREATE TABLE IF NOT EXISTS library (
-            id INTEGER PRIMARY KEY AUTOIMPLEMENT
-            author TEXT NOT NULL
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            author TEXT NOT NULL,
             title TEXT NOT NULL
         )
         """
@@ -52,6 +52,6 @@ class Database:
         """
         Delete record of a book.
         """
-        self.conn.execute("DELETE FROM contacts WHERE id= ?", (book_id,))
+        self.conn.execute("DELETE FROM library WHERE id= ?", (book_id,))
         self.conn.commit()
 
