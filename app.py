@@ -52,3 +52,29 @@ if show_books:
             if delete:
                 db.delete_book(book_id)
                 st.experimental_rerun()
+
+# Delete books
+st.subheader("🗑️ Delete a book")
+
+books = db.fetch_book()
+
+if books:
+    # Create a list of delete options in form "1 - Tolkien - LOTR"
+    delete_options = {
+        f"{book_id} - {author} - {title}": book_id
+        for book_id, author, title in books
+    }
+
+    book_to_delete = st.selectbox(
+        "Choose a book to delete:",
+        list(delete_options.keys())
+    )
+
+    if st.button("Delete Selected Book"):
+        selected_id = delete_options[book_to_delete]
+        db.delete_book(selected_id)
+        st.success("Book deleted.")
+        st.experimental_rerun()
+
+else:
+    st.info("No books available to delete.")
