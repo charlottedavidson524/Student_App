@@ -27,24 +27,28 @@ with st.form("add_book_form", clear_on_submit = True):
             st.success(f"Added: {book}")
 
 # List all books
-st.subheader("📖 Current library")
+st.subheader("📚 Display All Books")
 
-books = db.fetch_book()
+show_books = st.checkbox("Show library contents")
 
-if not books:
-    st.info("No books found. Add some!")
-else:
-    for book_id, author, title in books:
-        col1, col2, col3 = st.columns([4, 4, 1])
+if show_books:
+    books = db.fetch_book()
 
-    with col1:
-        st.write(f"**Author:** {author}")
-    with col2:
-        st.write(f"**Title:** {title}")
-    with col3:
-        delete_button = st.button("🗑️", key=f"delete_{book_id}")
+    if not books:
+        st.info("No books found.")
+    else:
+        st.write("### All Books:")
 
-    if delete_button:
-        db.delete_book(book_id)
-        st.experimental_rerun()
+        for book_id, author, title in books:
+            col1, col2, col3 = st.columns([4, 4, 1])
 
+            with col1:
+                st.write(f"**Author:** {author}")
+            with col2:
+                st.write(f"**Title:** {title}")
+            with col3:
+                delete = st.button("🗑️", key=f"delete_{book_id}")
+
+            if delete:
+                db.delete_book(book_id)
+                st.experimental_rerun()
